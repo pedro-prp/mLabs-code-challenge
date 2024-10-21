@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   resources :parking, only: [:create] do
     member do
       put 'pay'
+      put 'out'
     end
   end
 
