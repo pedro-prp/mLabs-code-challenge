@@ -7,7 +7,7 @@ class ParkingController < ApplicationController
     parking.paid = false
 
     if parking.save
-      render json: {id: parking.id, in_time: parking.in_time, message: "Entrada do veículo #{parking.plate} registrada com sucesso"}, status: :created 
+      render json: {reservation_number: parking.id, in_time: parking.in_time, message: "Entrada do veículo #{parking.plate} registrada com sucesso"}, status: :created 
     else
       errors = parking.errors.messages
       formatted_errors = errors.transform_keys(&:to_s)
