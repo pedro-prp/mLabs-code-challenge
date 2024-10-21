@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  plate: MyString
+  paid: false
+  left: false
+  in_time: 2024-10-20 23:10:29
+  out_time: 2024-10-20 23:10:29
+
+two:
+  plate: MyString
+  paid: false
+  left: false
+  in_time: 2024-10-20 23:10:29
+  out_time: 2024-10-20 23:10:29

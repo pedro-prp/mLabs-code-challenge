@@ -8,4 +8,9 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+  # 
+  # Parking API
+  
+  resources :parking, only: [:create]
+
 end
