@@ -1,4 +1,5 @@
 class ParkingController < ApplicationController
+  # POST /parking
   def create
     parking = Parking.new(parking_params)
 
@@ -15,20 +16,27 @@ class ParkingController < ApplicationController
     end
   end
 
+  # PUT /parking/:id/pay
   def pay
-    parking = Parking.find(params[:id])
+    begin
+      parking = Parking.find(params[:id])
 
-    if parking.paid
-      render json: {message: "O pagamento referente a reserva #{parking.id} já foi realizado"}, status: :unprocessable_entity
-    else
-      elapsed_time = calculate_elapsed_time(parking)
-      parking.update(paid: true, elapsed_time: elapsed_time) 
+      if parking.paid
+        render json: {message: "O pagamento referente a reserva #{parking.id} já foi realizado"}, status: :unprocessable_entity
+      else
+        elapsed_time = calculate_elapsed_time(parking)
+        parking.update(paid: true, elapsed_time: elapsed_time) 
 
-      render json: {elapsed_time: elapsed_time, message: "Pagamento referente a reserva #{parking.id} realizado com sucesso"}, status: :ok
+        render json: {elapsed_time: elapsed_time, message: "Pagamento referente a reserva #{parking.id} realizado com sucesso"}, status: :ok
+      end
+    rescue ActiveRecord::RecordNotFound
+      render json: {error: "reserva não encontrada"}, status: :not_found
     end
   end
 
+
   private
+
   def parking_params
     params.require(:parking).permit(:plate)
   end
