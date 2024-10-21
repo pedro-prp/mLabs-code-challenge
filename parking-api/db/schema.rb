@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_21_041139) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_21_051358) do
   create_table "parkings", force: :cascade do |t|
     t.string "plate"
     t.boolean "paid"
@@ -20,5 +20,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_21_041139) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "elapsed_time"
+    t.decimal "payment_price"
   end
 end

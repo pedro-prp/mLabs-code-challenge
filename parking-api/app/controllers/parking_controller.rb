@@ -26,9 +26,9 @@ class ParkingController < ApplicationController
       else
         elapsed_time = calculate_elapsed_time(parking)
         minute_rate = 0.30
-        payment_price = calculate_payment_price(elapsed_time, minute_rate) 
+        payment_price = calculate_payment_price(elapsed_time, minute_rate)
 
-        parking.update(paid: true, elapsed_time: elapsed_time) 
+        parking.update(paid: true, elapsed_time: elapsed_time, payment_price: payment_price) 
 
         render json: {elapsed_time: elapsed_time, payment_price: payment_price, message: "Pagamento referente a reserva #{parking.id} realizado com sucesso"}, status: :ok
       end
