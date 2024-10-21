@@ -41,6 +41,7 @@ class ParkingController < ApplicationController
     end
   end
 
+  # PUT /parking/:id/out
   def out
     begin
       parking = Parking.find(params[:id])
@@ -67,6 +68,18 @@ class ParkingController < ApplicationController
     end
   end
 
+  # GET /parking/:plate
+  def history
+    plate = params[:plate].upcase
+
+    parkings = Parking.where(plate: plate)
+
+    if parkings.any?
+      render json: parkings.map { |parking| format_history_object(parking) }
+    else
+      render json: {error: "Não foi encontrado nenhum registro para a seguinte placa: #{plate}."}
+    end
+  end
 
   private
 
@@ -94,4 +107,13 @@ class ParkingController < ApplicationController
     end
   end
 
+  # Formata saída do histórico de reservas
+  def format_history_object(parking)
+    {
+      id: parking.id,
+      time: "#{parking.elapsed_time} minutes",
+      paid: parking.paid,
+      left: parking.has_left
+    }
+  end
 end
