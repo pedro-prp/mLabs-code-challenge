@@ -27,8 +27,9 @@ class ParkingController < ApplicationController
       if parking.paid
         render json: {message: "O pagamento referente a reserva #{parking.id} já foi realizado"}, status: :unprocessable_entity
       else
-        elapsed_time = calculate_elapsed_time(parking)
         minute_rate = 0.30
+
+        elapsed_time = calculate_elapsed_time(parking)
         payment_price = calculate_payment_price(elapsed_time, minute_rate)
 
         parking.update(paid: true, elapsed_time: elapsed_time, payment_price: payment_price) 
@@ -40,6 +41,32 @@ class ParkingController < ApplicationController
     end
   end
 
+  def out
+    begin
+      parking = Parking.find(params[:id])
+
+      if !parking.paid
+        return render json: {error:"Saída não registrada. Pagamento da reserva #{parking.id} se encontra pendente"}, status: :unprocessable_entity
+      end
+      
+      if parking.has_left
+        return render json: {message: "A saída referente a reserva #{parking.id} já foi realizada"}, status: :unprocessable_entity
+      end
+
+      out_time = Time.now
+      
+      if parking.update(has_left: true, out_time: out_time)
+        return render json: {message: "Saída referente a reserva #{parking.id} realizada com sucesso", reservation_number: parking.id, out_time: out_time}, status: :ok
+      else
+        return render json: {message: "Erro ao processar saída da reserva #{parking.id}"}
+      end
+
+    
+    rescue ActiveRecord::RecordNotFound
+      return render json: {error: "reserva não encontrada"}, status: :not_found
+    end
+  end
+
 
   private
 
@@ -47,6 +74,7 @@ class ParkingController < ApplicationController
     params.require(:parking).permit(:plate)
   end
 
+  # Calcula o tempo de permanência do veículo
   def calculate_elapsed_time(parking)
     elapsed_time = (Time.now - parking.in_time)
     elapsed_time = (elapsed_time / 60).to_i
@@ -62,7 +90,7 @@ class ParkingController < ApplicationController
     when 16..59
       return elapsed_time * minute_rate
     else
-      return elapsed_time * (minute/2)
+      return elapsed_time * (minute_rate/2)
     end
   end
 
