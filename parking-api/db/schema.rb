@@ -10,11 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_21_021029) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_21_030749) do
   create_table "parkings", force: :cascade do |t|
     t.string "plate"
     t.boolean "paid"
-    t.boolean "left"
+    t.boolean "has_left"
     t.datetime "in_time"
     t.datetime "out_time"
     t.datetime "created_at", null: false
