@@ -1,4 +1,7 @@
 class ParkingController < ApplicationController
+
+  before_action :authorize_request
+
   # POST /parking
   def create
     parking = Parking.new(parking_params)
