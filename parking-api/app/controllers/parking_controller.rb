@@ -75,7 +75,7 @@ class ParkingController < ApplicationController
     parkings = Parking.where(plate: plate)
 
     if parkings.any?
-      render json: {parkings: parkings}
+      render json: parkings.map { |parking| format_history_object(parking) }
     else
       render json: {error: "Não foi encontrado nenhum registro para a seguinte placa: #{plate}."}
     end
@@ -107,6 +107,13 @@ class ParkingController < ApplicationController
     end
   end
 
-  # 
-
+  # Formata saída do histórico de reservas
+  def format_history_object(parking)
+    {
+      id: parking.id,
+      time: "#{parking.elapsed_time} minutes",
+      paid: parking.paid,
+      left: parking.has_left
+    }
+  end
 end
