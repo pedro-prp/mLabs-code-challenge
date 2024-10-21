@@ -11,6 +11,10 @@ Rails.application.routes.draw do
   # 
   # Parking API
   
-  resources :parking, only: [:create]
+  resources :parking, only: [:create] do
+    member do
+      put 'pay'
+    end
+  end
 
 end
