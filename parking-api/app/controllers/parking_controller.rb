@@ -46,7 +46,7 @@ class ParkingController < ApplicationController
       parking = Parking.find(params[:id])
 
       if !parking.paid
-        return render json: {error:"Saída não registrada. Pagamento da reserva se encontra pendente"}, status: :unprocessable_entity
+        return render json: {error:"Saída não registrada. Pagamento da reserva #{parking.id} se encontra pendente"}, status: :unprocessable_entity
       end
       
       if parking.has_left
@@ -54,9 +54,14 @@ class ParkingController < ApplicationController
       end
 
       out_time = Time.now
-      parking.update(has_left: true, out_time: out_time)
+      
+      
+      if parking.update(has_left: true, out_time: out_time)
+        return render json: {message: "Saída referente a reserva #{parking.id} realizada com sucesso", reservation_number: parking.id, out_time: out_time}, status: :ok
+      else
+        return render json: {message: "Erro ao processar saída da reserva #{parking.id}"}
+      end
 
-      return render json: {message: "Saída referente a reserva #{parking.id} realizada com sucesso"}, status: :ok
     
     rescue ActiveRecord::RecordNotFound
       return render json: {error: "reserva não encontrada"}, status: :not_found
