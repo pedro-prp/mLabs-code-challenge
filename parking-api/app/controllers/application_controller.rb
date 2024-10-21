@@ -4,10 +4,11 @@ class ApplicationController < ActionController::API
   end
 
   def authorize_request
-    @current_user = User.find(decoded_token[:user_id]) if decoded_token
-    render json: { "error": "Usuário não autorizado. Verifique seu token"}, status: :unauthorized unless @current_user
+    @current_user = User.find_by(id: decoded_token["user_id"]) if decoded_token
+    unless @current_user
+      render json: { error: "Usuário não autorizado. Verifique seu token" }, status: :unauthorized
+    end
   end
-
 
   private
 
@@ -17,15 +18,10 @@ class ApplicationController < ActionController::API
 
       begin
         decoded_token = JWT.decode(token, Rails.application.secret_key_base)[0]
-
-        puts decoded_token
-        
         return decoded_token
-      
       rescue JWT::DecodeError
         return nil
       end
     end
   end
-
 end
