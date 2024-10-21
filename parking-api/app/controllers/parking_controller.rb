@@ -55,7 +55,6 @@ class ParkingController < ApplicationController
 
       out_time = Time.now
       
-      
       if parking.update(has_left: true, out_time: out_time)
         return render json: {message: "Saída referente a reserva #{parking.id} realizada com sucesso", reservation_number: parking.id, out_time: out_time}, status: :ok
       else
@@ -75,6 +74,7 @@ class ParkingController < ApplicationController
     params.require(:parking).permit(:plate)
   end
 
+  # Calcula o tempo de permanência do veículo
   def calculate_elapsed_time(parking)
     elapsed_time = (Time.now - parking.in_time)
     elapsed_time = (elapsed_time / 60).to_i
