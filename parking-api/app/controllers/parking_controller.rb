@@ -41,6 +41,7 @@ class ParkingController < ApplicationController
     end
   end
 
+  # PUT /parking/:id/out
   def out
     begin
       parking = Parking.find(params[:id])
@@ -67,6 +68,18 @@ class ParkingController < ApplicationController
     end
   end
 
+  # GET /parking/:plate
+  def history
+    plate = params[:plate].upcase
+
+    parkings = Parking.where(plate: plate)
+
+    if parkings.any?
+      render json: {parkings: parkings}
+    else
+      render json: {error: "Não foi encontrado nenhum registro para a seguinte placa: #{plate}."}
+    end
+  end
 
   private
 
@@ -93,5 +106,7 @@ class ParkingController < ApplicationController
       return elapsed_time * (minute_rate/2)
     end
   end
+
+  # 
 
 end

@@ -18,6 +18,9 @@ Rails.application.routes.draw do
       put 'pay'
       put 'out'
     end
+    collection do
+      get "/:plate", to: "parking#history"
+    end
   end
 
 end
