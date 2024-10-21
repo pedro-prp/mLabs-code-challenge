@@ -9,8 +9,9 @@ class ParkingController < ApplicationController
     if parking.save
       render json: {id: parking.id, in_time: parking.in_time, message: "Entrada do veículo #{parking.plate} registrada com sucesso"}, status: :created 
     else
-      errors = parking.errors.full_messages
-      render json: {errors: errors}, status: :unprocessable_entity
+      errors = parking.errors.messages
+      formatted_errors = errors.transform_keys(&:to_s)
+      render json: {errors: formatted_errors}, status: :unprocessable_entity
     end
   end
 

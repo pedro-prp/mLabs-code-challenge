@@ -5,7 +5,7 @@ class Parking < ApplicationRecord
 
   def unique_plate_in_parking
     if Parking.where(plate: plate, has_left: false).exists?
-      errors.add(:plate, 'Já existe um veículo estacionado com essa placa')
+      errors.add(:plate, "Já existe um registro em aberto para a seguinte placa #{plate}")
     end
   end
 end
