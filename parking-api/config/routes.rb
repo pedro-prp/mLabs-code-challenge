@@ -6,21 +6,18 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
   get "hello" => "application#hello"
 
-  
   # Authentication
   post "login", to: "auth#login"
   post "register", to: "auth#register"
 
   # Parking API
-  
-  resources :parking, only: [:create] do
+  resources :parking, only: [ :create ] do
     member do
-      put 'pay'
-      put 'out'
+      put "pay"
+      put "out"
     end
     collection do
       get "/:plate", to: "parking#history"
     end
   end
-
 end

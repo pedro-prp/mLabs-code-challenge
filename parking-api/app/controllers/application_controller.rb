@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::API
   def hello
-    render json: { message: 'Hello, World!' }
+    render json: { message: "Hello, World!" }
   end
 
   def authorize_request
@@ -18,9 +18,8 @@ class ApplicationController < ActionController::API
 
       begin
         decoded_token = JWT.decode(token, Rails.application.secret_key_base)[0]
-        return decoded_token
       rescue JWT::DecodeError
-        return nil
+        nil
       end
     end
   end
