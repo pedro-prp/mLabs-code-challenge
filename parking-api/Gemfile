@@ -43,5 +43,3 @@ group :development, :test do
 
   gem "bcrypt"
 end
-
-
