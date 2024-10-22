@@ -39,4 +39,4 @@ jobs:
         KUBECONFIG: ${{ secrets.KUBECONFIG }}
       run: |
         cd parking-api/
-        kubectl set image deployment/my-app-deployment my-app-container=<dockerhub-username>/my-app:${{ github.sha }}
+        kubectl set image deployment/my-app-deployment my-app-container=${{ secrets.DOCKER_USERNAME }}/my-app:${{ github.sha }}
