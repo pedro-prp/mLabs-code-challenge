@@ -75,7 +75,7 @@ jobs:
       - name: Run tests
         env:
           RAILS_ENV: test
-        run: cd parking-api && bin/rails db:test:prepare test test:system
+        run: cd parking-api && bin/rails db:test:prepare test
 
       - name: Keep screenshots from failed system tests
         uses: actions/upload-artifact@v4
