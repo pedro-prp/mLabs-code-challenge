@@ -19,8 +19,15 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
+      - name: Install dependencies
+        run: |
+          cd parking-api
+          bundle install --jobs 4 --retry 3
+
       - name: Scan for common Rails security vulnerabilities using static analysis
-        run: cd parking-api && bin/brakeman --no-pager
+        run: |
+          cd parking-api
+          bin/brakeman --no-pager
 
   scan_js:
     runs-on: ubuntu-latest
