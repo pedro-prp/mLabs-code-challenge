@@ -25,6 +25,7 @@ jobs:
 
     - name: Build Docker image
       run: |
+        cd parking-api/
         docker build -t ${{ secrets.DOCKER_USERNAME }}/my-app:${{ github.sha }} .
         docker push ${{ secrets.DOCKER_USERNAME }}/my-app:${{ github.sha }}
 
