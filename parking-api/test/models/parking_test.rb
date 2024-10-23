@@ -2,7 +2,7 @@ require "test_helper"
 
 class ParkingTest < ActiveSupport::TestCase
   test "should not save parking without plate" do
-    parking = Parking.new(paid:false)
+    parking = Parking.new(paid: false)
 
     assert_not parking.save, "Saved the parking without a plate"
   end
@@ -20,13 +20,12 @@ class ParkingTest < ActiveSupport::TestCase
     parking.save
 
     assert_equal 90, parking.calculate_elapsed_time(parking)
-
   end
 
   test "calculate payment price should return correct amount" do
-    parking = Parking.new(in_time: Time.now - 90.minutes) # 90 minutes ago
+    parking = Parking.new(in_time: Time.now - 90.minutes)
     parking.save
-    
+
     elapsed_time = parking.calculate_elapsed_time(parking)
     minute_rate = 0.30
     expected_price = elapsed_time * (minute_rate/2)
