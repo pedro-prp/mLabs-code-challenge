@@ -28,8 +28,8 @@ class ParkingController < ApplicationController
       else
         minute_rate = 0.30
 
-        elapsed_time = calculate_elapsed_time(parking)
-        payment_price = calculate_payment_price(elapsed_time, minute_rate)
+        elapsed_time = parking.calculate_elapsed_time(parking)
+        payment_price = parking.calculate_payment_price(elapsed_time, minute_rate)
 
         parking.update(paid: true, elapsed_time: elapsed_time, payment_price: payment_price)
 
@@ -84,26 +84,6 @@ class ParkingController < ApplicationController
 
   def parking_params
     params.require(:parking).permit(:plate)
-  end
-
-  # Calcula o tempo de permanência do veículo
-  def calculate_elapsed_time(parking)
-    elapsed_time = (Time.now - parking.in_time)
-    elapsed_time = (elapsed_time / 60).to_i
-
-    elapsed_time
-  end
-
-  # Calcula o valor do pagamento de acordo com o tempo de permanência
-  def calculate_payment_price(elapsed_time, minute_rate)
-    case elapsed_time
-    when 0..15
-      10.00
-    when 16..59
-      elapsed_time * minute_rate
-    else
-      elapsed_time * (minute_rate/2)
-    end
   end
 
   # Formata saída do histórico de reservas
