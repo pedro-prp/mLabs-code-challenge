@@ -2,7 +2,7 @@
 
 right_user:
   username: MyString
-  password_digest: $2a$12$W3zMh7s9h.lFdjDg0EiRyuMmvC2J.w6IwNp9zXFLY6DPUFGFxlT5O
+  password_digest: test_pass
 
 wrong_user:
   username: MyString
