@@ -9,6 +9,10 @@ class ParkingControllerTest < ActionDispatch::IntegrationTest
     @right_parking_data = { plate: "ABC-1234" }
     @wrong_parking_data = { plate: "TESTWRONG" }
 
+    @no_payment_parking = parkings(:no_payment_parking)
+    @paid_parking = parkings(:paid_parking)
+    @paid_and_out_parking = parkings(:paid_and_out_parking)
+
   end
 
   test "should create parking reservation" do
@@ -51,5 +55,25 @@ class ParkingControllerTest < ActionDispatch::IntegrationTest
     response_body  = JSON.parse(@response.body)
 
     assert_includes response_body['errors']['plate'].first, "Já existe um registro em aberto para a seguinte placa #{unique_plate}"
+  end
+
+  test "should pay a active parking" do
+    put pay_parking_url(@no_payment_parking.id), headers: @headers
+
+    assert_response :ok
+
+    response_body = JSON.parse(@response.body)
+
+    assert_includes response_body['message'], "Pagamento referente a reserva #{@no_payment_parking.id} realizado com sucesso"
+  end
+
+  test "should not pay a already paid parking" do
+    put pay_parking_url(@paid_parking.id), headers: @headers
+
+    assert_response :unprocessable_entity
+
+    response_body = JSON.parse(@response.body)
+
+    assert_includes response_body['message'], "O pagamento referente a reserva #{@paid_parking.id} já foi realizado"
   end
 end
