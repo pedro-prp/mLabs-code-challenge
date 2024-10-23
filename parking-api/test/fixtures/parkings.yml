@@ -24,3 +24,18 @@ no_payment_parking:
   paid: false
   has_left: false
   in_time: 2024-10-20 23:10:29
+
+history_parking_1:
+  plate: "HIS-7051"
+  paid: true
+  has_left: true
+  in_time: 2024-10-20 23:10:29
+  out_time: 2024-10-20 00:00:29
+  elapsed_time: 50
+  payment_price: 15.00
+
+history_parking_2:
+  plate: "HIS-7051"
+  paid: false
+  has_left: false
+  in_time: 2024-10-22 20:15:00

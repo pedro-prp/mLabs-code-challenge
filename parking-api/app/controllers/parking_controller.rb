@@ -74,9 +74,9 @@ class ParkingController < ApplicationController
     parkings = Parking.where(plate: plate)
 
     if parkings.any?
-      render json: parkings.map { |parking| format_history_object(parking) }
+      render json: parkings.map { |parking| format_history_object(parking) }, status: :ok
     else
-      render json: { error: "Não foi encontrado nenhum registro para a seguinte placa: #{plate}." }
+      render json: { error: "Não foi encontrado nenhum registro para a seguinte placa: #{plate}." }, status: :not_found
     end
   end
 

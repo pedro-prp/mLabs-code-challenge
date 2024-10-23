@@ -12,6 +12,7 @@ class ParkingControllerTest < ActionDispatch::IntegrationTest
     @no_payment_parking = parkings(:no_payment_parking)
     @paid_parking = parkings(:paid_parking)
     @paid_and_out_parking = parkings(:paid_and_out_parking)
+    @history_parking_1 = parkings(:history_parking_1)
 
   end
 
@@ -111,6 +112,54 @@ class ParkingControllerTest < ActionDispatch::IntegrationTest
     response_body = JSON.parse(@response.body)
 
     assert_includes response_body['error'], "Saída não registrada. Pagamento da reserva #{@no_payment_parking.id} se encontra pendente"
+  end
+
+  test "should not found a reservation in out process" do
+    put out_parking_url("12345"), headers: @headers
+
+    assert_response :not_found
+
+    response_body = JSON.parse(@response.body)
+
+    assert_includes response_body['error'], "reserva não encontrada"
+  end
+
+  test "should get a history of plate" do
+
+    history_parking_url = "/parking/#{@history_parking_1.plate}"
+
+    get history_parking_url, headers: @headers
+
+    assert_response :ok
+
+    response_body = JSON.parse(@response.body)
+
+    assert_equal response_body.length, 2
+    assert_includes response_body.map { |parking| parking['id'] }, @history_parking_1.id
+  end
+
+  test "should not found a plate in history" do
+    history_parking_url = "/parking/TES7123"
+
+    get history_parking_url, headers: @headers
+
+    assert_response :not_found
+
+    response_body = JSON.parse(@response.body)
+
+    assert_includes response_body['error'], "Não foi encontrado nenhum registro para a seguinte placa: TES7123."
+  end
+
+  test "should check response keys format" do
+    history_parking_url = "/parking/#{@history_parking_1.plate}"
+
+    get history_parking_url, headers: @headers
+
+    response_body = JSON.parse(@response.body)
+
+    expected_keys = ["id", "left", "paid", "time"]
+
+    assert_equal expected_keys.sort, response_body.first.keys.sort
   end
 end
  
