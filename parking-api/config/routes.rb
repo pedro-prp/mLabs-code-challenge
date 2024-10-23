@@ -17,7 +17,7 @@ Rails.application.routes.draw do
       put "out"
     end
     collection do
-      get "/:plate", to: "parking#history"
+      get "/:plate", to: "parking#history", as: :history_parking
     end
   end
 end

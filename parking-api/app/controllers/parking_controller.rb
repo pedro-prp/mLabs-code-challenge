@@ -28,8 +28,8 @@ class ParkingController < ApplicationController
       else
         minute_rate = 0.30
 
-        elapsed_time = calculate_elapsed_time(parking)
-        payment_price = calculate_payment_price(elapsed_time, minute_rate)
+        elapsed_time = parking.calculate_elapsed_time(parking)
+        payment_price = parking.calculate_payment_price(elapsed_time, minute_rate)
 
         parking.update(paid: true, elapsed_time: elapsed_time, payment_price: payment_price)
 
@@ -50,7 +50,7 @@ class ParkingController < ApplicationController
       end
 
       if parking.has_left
-        return render json: { message: "A saída referente a reserva #{parking.id} já foi realizada" }, status: :unprocessable_entity
+        return render json: { error: "A saída referente a reserva #{parking.id} já foi realizada" }, status: :unprocessable_entity
       end
 
       out_time = Time.now
@@ -58,7 +58,7 @@ class ParkingController < ApplicationController
       if parking.update(has_left: true, out_time: out_time)
         render json: { message: "Saída referente a reserva #{parking.id} realizada com sucesso", reservation_number: parking.id, out_time: out_time }, status: :ok
       else
-        render json: { message: "Erro ao processar saída da reserva #{parking.id}" }
+        render json: { error: "Erro ao processar saída da reserva #{parking.id}" }
       end
 
 
@@ -74,9 +74,9 @@ class ParkingController < ApplicationController
     parkings = Parking.where(plate: plate)
 
     if parkings.any?
-      render json: parkings.map { |parking| format_history_object(parking) }
+      render json: parkings.map { |parking| format_history_object(parking) }, status: :ok
     else
-      render json: { error: "Não foi encontrado nenhum registro para a seguinte placa: #{plate}." }
+      render json: { error: "Não foi encontrado nenhum registro para a seguinte placa: #{plate}." }, status: :not_found
     end
   end
 
@@ -84,26 +84,6 @@ class ParkingController < ApplicationController
 
   def parking_params
     params.require(:parking).permit(:plate)
-  end
-
-  # Calcula o tempo de permanência do veículo
-  def calculate_elapsed_time(parking)
-    elapsed_time = (Time.now - parking.in_time)
-    elapsed_time = (elapsed_time / 60).to_i
-
-    elapsed_time
-  end
-
-  # Calcula o valor do pagamento de acordo com o tempo de permanência
-  def calculate_payment_price(elapsed_time, minute_rate)
-    case elapsed_time
-    when 0..15
-      10.00
-    when 16..59
-      elapsed_time * minute_rate
-    else
-      elapsed_time * (minute_rate/2)
-    end
   end
 
   # Formata saída do histórico de reservas
