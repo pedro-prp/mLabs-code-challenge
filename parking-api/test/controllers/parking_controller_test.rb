@@ -41,11 +41,7 @@ class ParkingControllerTest < ActionDispatch::IntegrationTest
 
   test "should create just a unique active parking" do
 
-    unique_plate = "AAA-1234"
-
-    assert_difference("Parking.count", 1) do
-      post parking_index_url, params: { parking: { plate: unique_plate } }, headers: @headers
-    end
+    unique_plate = @no_payment_parking.plate
 
     assert_difference("Parking.count", 0) do
       post parking_index_url, params: { parking: { plate: unique_plate }}, headers: @headers
@@ -77,7 +73,7 @@ class ParkingControllerTest < ActionDispatch::IntegrationTest
     assert_includes response_body['message'], "O pagamento referente a reserva #{@paid_parking.id} já foi realizado"
   end
 
-  test "should not found a valid reservation" do
+  test "should not found a valid reservation in payment" do
     put pay_parking_url("12345"), headers: @headers
 
     assert_response :not_found
@@ -86,4 +82,35 @@ class ParkingControllerTest < ActionDispatch::IntegrationTest
 
     assert_includes response_body['error'], "reserva não encontrada"
   end
+
+  test "should set out to a parking" do
+    put out_parking_url(@paid_parking.id), headers: @headers
+
+    assert_response :ok
+
+    response_body = JSON.parse(@response.body)
+
+    assert_includes response_body['message'], "Saída referente a reserva #{@paid_parking.id} realizada com sucesso"
+  end
+
+  test "should not set out a already left parking" do
+    put out_parking_url(@paid_and_out_parking.id), headers: @headers
+
+    assert_response :unprocessable_entity
+
+    response_body = JSON.parse(@response.body)
+
+    assert_includes response_body['error'], "A saída referente a reserva #{@paid_and_out_parking.id} já foi realizada"
+  end
+
+  test "should not set out a not paid parking" do
+    put out_parking_url(@no_payment_parking.id), headers: @headers
+
+    assert_response :unprocessable_entity
+
+    response_body = JSON.parse(@response.body)
+
+    assert_includes response_body['error'], "Saída não registrada. Pagamento da reserva #{@no_payment_parking.id} se encontra pendente"
+  end
 end
+ 

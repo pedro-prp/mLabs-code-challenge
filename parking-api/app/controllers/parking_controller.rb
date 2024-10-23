@@ -50,7 +50,7 @@ class ParkingController < ApplicationController
       end
 
       if parking.has_left
-        return render json: { message: "A saída referente a reserva #{parking.id} já foi realizada" }, status: :unprocessable_entity
+        return render json: { error: "A saída referente a reserva #{parking.id} já foi realizada" }, status: :unprocessable_entity
       end
 
       out_time = Time.now
@@ -58,7 +58,7 @@ class ParkingController < ApplicationController
       if parking.update(has_left: true, out_time: out_time)
         render json: { message: "Saída referente a reserva #{parking.id} realizada com sucesso", reservation_number: parking.id, out_time: out_time }, status: :ok
       else
-        render json: { message: "Erro ao processar saída da reserva #{parking.id}" }
+        render json: { error: "Erro ao processar saída da reserva #{parking.id}" }
       end
 
 
