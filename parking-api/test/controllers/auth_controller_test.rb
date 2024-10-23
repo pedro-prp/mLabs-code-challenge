@@ -1,7 +1,7 @@
 require "test_helper"
 
 class AuthControllerTest < ActionDispatch::IntegrationTest
-  # test "the truth" do
-  #   assert true
-  # end
+  test "Should create a user" do
+    post register_url, headers:
+  end
 end
