@@ -34,4 +34,22 @@ class ParkingControllerTest < ActionDispatch::IntegrationTest
     assert_includes response_body['errors']['plate'].first, "Formato invalído para o campo plate. Utilize AAA-9999"
 
   end
+
+  test "should create just a unique active parking" do
+
+    unique_plate = "AAA-1234"
+
+    assert_difference("Parking.count", 1) do
+      post parking_index_url, params: { parking: { plate: unique_plate } }, headers: @headers
+    end
+
+    assert_difference("Parking.count", 0) do
+      post parking_index_url, params: { parking: { plate: unique_plate }}, headers: @headers
+    end
+
+    assert_response :unprocessable_entity
+    response_body  = JSON.parse(@response.body)
+
+    assert_includes response_body['errors']['plate'].first, "Já existe um registro em aberto para a seguinte placa #{unique_plate}"
+  end
 end
