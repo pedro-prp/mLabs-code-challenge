@@ -76,4 +76,14 @@ class ParkingControllerTest < ActionDispatch::IntegrationTest
 
     assert_includes response_body['message'], "O pagamento referente a reserva #{@paid_parking.id} já foi realizado"
   end
+
+  test "should not found a valid reservation" do
+    put pay_parking_url("12345"), headers: @headers
+
+    assert_response :not_found
+
+    response_body = JSON.parse(@response.body)
+
+    assert_includes response_body['error'], "reserva não encontrada"
+  end
 end
