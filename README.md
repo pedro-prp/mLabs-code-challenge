@@ -1,5 +1,6 @@
 
-![alt text](https://www.anamid.com.br/wp-content/uploads/2022/12/logo-mlabs.png)
+
+<h1 align="center"> mLabs Code Challenge </h1> <p align="center"> <img src="https://www.anamid.com.br/wp-content/uploads/2022/12/logo-mlabs.png" alt="Logo Seazone" style="width: 70%; display: block; margin: 0 auto;"> <br> </p> <p align="center"> <a href="#-1-descrição">📋 Descrição</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; <a href="#-2-funcionalidades">🚀 Funcionalidades</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; <a href="#⚙-3-como-rodar-o-projeto">⚙ Como Rodar</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; <a href="#-4-endpoints">🌐 Endpoints</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; <a href="#-5-licença">📝 License</a> </p>
 
 
 # Desafio Técnico - mLabs
