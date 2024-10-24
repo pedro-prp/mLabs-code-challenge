@@ -7,7 +7,7 @@
 
 ## 📋 1. Descrição
 
-Este projeto é uma API de gerenciamento de estacionamento que permite registrar a entrada e saída de veículos, realizar pagamentos de reservas e consultar o histórico de reservas de um veículo. A API foi desenvolvida utilizando Node.js e Express, e segue as melhores práticas de desenvolvimento de APIs RESTful.
+Este projeto é uma API de gerenciamento de estacionamento que permite registrar a entrada e saída de veículos, realizar pagamentos de reservas e consultar o histórico de reservas de um veículo. A API foi desenvolvida utilizando Ruby e Ruby on Rails.
 
 ## 🚀 2. Funcionalidades
 
