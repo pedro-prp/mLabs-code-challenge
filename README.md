@@ -17,6 +17,7 @@ Este projeto é uma API de gerenciamento de estacionamento que permite registrar
 - **Consulta de Histórico**: Permite consultar o histórico de reservas de um veículo através de sua placa.
 
 ## ⚙ 3. Como rodar o projeto
+Para rodar o projeto é possível utilizar o Docker ou instalar as dependências localmente.
 
 ### 3.1 Pré-requisitos
 
@@ -24,7 +25,14 @@ Este projeto é uma API de gerenciamento de estacionamento que permite registrar
 - [Rails](https://rubyonrails.org/) 7.0+
 - [Docker](https://www.docker.com/) (Opcional)
 
-### 3.2 Instalação
+### 3.1 Rodando o projeto com Docker
+Caso opte por utilizar o **Docker** e **docker-compose**. Basta rodar os seguintes comando:
+```bash
+$ cd parking-api/
+$ docker-compose up
+```
+
+### 3.2 Instalação de dependências
 
 * Primeiro é necessário instalar o Rails Blundler, para isso utilize o gem:
 ```bash
@@ -37,7 +45,7 @@ $ cd parking-api/
 $ bundle install
 ```
 
-### 3.3 Rodando o projeto
+### 3.3 Rodando o projeto com Rails
 * Com a instalação de dependências finalizada, podemos rodar o servidor de desenvolvimento através do Rails:
 ```bash
 $ rails server
